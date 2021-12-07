@@ -15,10 +15,11 @@ class ProductController extends Controller
             'allproduct'=> $allproduct,            
         ]);
     }
-    // public function pagination($truyvan,$page){
-    //     $quantity = $truyvan->count();
-    //     $number_page = ceil($quantity/$item_per_page);
-    //     $offset = ($page - 1)*$item_per_page;
-    //     $showitems = $truyvan->limit($item_per_page)->offset($offset)->get();
-    // }
+    public function category(){
+        $category = DB::table('category_product')->get();
+        return response()->json([
+            'status'=> 200,
+            'category'=> $category,
+        ]);
+    }    
 }
