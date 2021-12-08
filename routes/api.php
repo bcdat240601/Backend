@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CustomerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,3 +28,7 @@ Route::post('category', [ProductController::class, 'category']);
 Route::post('shop/category', [ProductController::class, 'showproductbycate']);
 
 Route::post('shop/detail', [ProductController::class, 'productdetail']);
+
+Route::post('register', [CustomerController::class, 'register']);
+
+Route::post('login', [CustomerController::class, 'login']);
