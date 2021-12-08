@@ -25,3 +25,5 @@ Route::post('shop', [ProductController::class, 'index']);
 Route::post('category', [ProductController::class, 'category']);
 
 Route::post('shop/category', [ProductController::class, 'showproductbycate']);
+
+Route::post('shop/detail', [ProductController::class, 'productdetail']);

@@ -44,4 +44,11 @@ class ProductController extends Controller
             'productcate'=> $resul2,
         ]);
     } 
+    public function productdetail(Request $req){
+        $product = DB::table('product')->where("product_id",$req->idpro)->get();
+        return response()->json([
+            'status'=> 200,
+            'productdetail'=> $product,
+        ]);
+    }
 }
