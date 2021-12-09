@@ -25,6 +25,10 @@ Route::post('shop', [ProductController::class, 'index']);
 
 Route::post('category', [ProductController::class, 'category']);
 
+Route::post('sex', [ProductController::class, 'sex']);
+
+Route::post('age', [ProductController::class, 'age']);
+
 Route::post('shop/category', [ProductController::class, 'showproductbycate']);
 
 Route::post('shop/detail', [ProductController::class, 'productdetail']);

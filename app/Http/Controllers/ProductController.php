@@ -21,7 +21,21 @@ class ProductController extends Controller
             'status'=> 200,
             'category'=> $category,
         ]);
-    }   
+    }
+    public function sex(){
+        $gioitinh = DB::table('gioitinh')->get();
+        return response()->json([
+            'status'=> 200,
+            'gioitinh'=> $gioitinh,
+        ]);
+    }
+    public function age(){
+        $age = DB::table('age')->get();
+        return response()->json([
+            'status'=> 200,
+            'age'=> $age,
+        ]);
+    }
     public function showproductbycate(Request $req){
         // cach 1
         // $product1 = DB::table('catesex')->select('catesex_id')->where('category_id',$req->id)->get();
@@ -44,17 +58,24 @@ class ProductController extends Controller
         //     'productcate'=> $resul2,
         // ]);
         //cach 2
-        $query1 = DB::table('catesex')->select('cateagesex_id')->join('category_detail','catesex.catesex_id','=','category_detail.catesex_id')->where('catesex.category_id',$req->id)->get();        
+        $query1 = DB::table('catesex')->select('cateagesex_id')->join('category_detail','catesex.catesex_id','=','category_detail.catesex_id')->where('catesex.category_id',$req->id);
+        if ($req->sex != null) {
+            $query1->where('catesex.sex_id',$req->sex);
+        }
+        if ($req->age != null) {
+            $query1->where('category_detail.age_id',$req->age);
+        }
+        $result = $query1->get();
         $query2 = DB::table('product');
-        foreach ($query1 as $values) {
+        foreach ($result as $values) {
             foreach ($values as $value) {
                 $query2->orwhere('cateagesex_id' ,$value);
             }
         }
-        $result = $query2->paginate(1);
+        $result2 = $query2->paginate(1);
         return response()->json([
             'status'=> 200,
-            'productcate'=> $result,
+            'productcate'=> $result2,
         ]);
     } 
     public function productdetail(Request $req){
