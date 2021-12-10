@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use App\Models\Product;
 use DB;
 class ProductController extends Controller
@@ -85,4 +86,29 @@ class ProductController extends Controller
             'productdetail'=> $product,
         ]);
     }
+    public function addtocart(Request $req){
+        $id = $req->idpro;
+        $query = DB::table('product')->where('product_id',$id)->get();
+        $cart = session()->get('cart');
+        if(isset($cart[$id])){
+            $cart[$id]['quantity'] = $cart[$id]['quantity'] + 1;            
+        }
+        else {
+            foreach ($query as $value) {
+                $cart[$id] = [
+                    'id' => $value->product_id,
+                    'name' => $value->name,
+                    'price' => $value->price,
+                    'quantity' => 1,
+                    'image'=> $value->image,
+                    'subtotal'=> $value->price
+                ];
+            }
+        }
+        session()->flash('cart',$cart);          
+        return response()->json([
+            'status'=> 200,
+            'cart'=> $cart,
+        ]);        
+    }        
 }
