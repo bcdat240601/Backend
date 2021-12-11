@@ -89,23 +89,18 @@ class ProductController extends Controller
     public function addtocart(Request $req){
         $id = $req->idpro;
         $query = DB::table('product')->where('product_id',$id)->get();
-        $cart = session()->get('cart');
-        if(isset($cart[$id])){
-            $cart[$id]['quantity'] = $cart[$id]['quantity'] + 1;            
+        $cart = [];        
+        foreach ($query as $value) {
+            $cart = [
+                'id' => $value->product_id,
+                'name' => $value->name,
+                'price' => $value->price,
+                'quantity' => 1,
+                'image'=> $value->image,
+                'subtotal'=> $value->price
+            ];
         }
-        else {
-            foreach ($query as $value) {
-                $cart[$id] = [
-                    'id' => $value->product_id,
-                    'name' => $value->name,
-                    'price' => $value->price,
-                    'quantity' => 1,
-                    'image'=> $value->image,
-                    'subtotal'=> $value->price
-                ];
-            }
-        }
-        session()->flash('cart',$cart);          
+        session()->put('cart',$cart);          
         return response()->json([
             'status'=> 200,
             'cart'=> $cart,
