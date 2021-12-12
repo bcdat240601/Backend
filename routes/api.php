@@ -29,6 +29,8 @@ Route::post('sex', [ProductController::class, 'sex']);
 
 Route::post('age', [ProductController::class, 'age']);
 
+Route::post('cart/checkout', [ProductController::class, 'checkout']);
+
 Route::post('shop/category', [ProductController::class, 'showproductbycate']);
 
 Route::post('shop/addtocart', [ProductController::class, 'addtocart']);
@@ -38,3 +40,4 @@ Route::post('shop/detail', [ProductController::class, 'productdetail']);
 Route::post('register', [CustomerController::class, 'register']);
 
 Route::post('login', [CustomerController::class, 'login']);
+

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use App\Models\Product;
+use App\Models\orderquanao;
+use App\Models\orderdetail;
 use DB;
 class ProductController extends Controller
 {
@@ -105,5 +107,50 @@ class ProductController extends Controller
             'status'=> 200,
             'cart'=> $cart,
         ]);        
-    }        
+    }  
+    public function checkout(Request $req){
+        $cart = $req->params1;
+        $total = $req->params2;
+        $idcus = $req->params3;
+        $address = $req->params4;
+        if ($address == 1) {
+            $address == "Thành Phố Hồ Chí Minh";
+        }elseif ($address == 2) {
+            $address = "Hà Nội";
+        }
+        foreach ($cart as $values) {        
+            $query = DB::table('product')->select('product_id','quantity')->where('product_id',$values['id'])->first();            
+            if ($values['quantity'] > $query->quantity) {
+                return response()->json([
+                    'status'=> 200,
+                    'message'=> "nhiều quá",
+                ]);
+            }               
+        }        
+        $orderquanao = new orderquanao();
+        $orderquanao->customer_id = $idcus;
+        $orderquanao->status = 0;
+        $orderquanao->total = $total;
+        $orderquanao->address = $address;
+        $orderquanao->save();        
+        foreach ($cart as $values) {            
+            $orderdetail = new orderdetail();
+            $orderdetail->order_id = $orderquanao->order_id;
+            $orderdetail->product_id = $values['id'];
+            $orderdetail->price = $values['price'];
+            $orderdetail->quantity = $values['quantity'];
+            $orderdetail->subtotal = $values['subtotal'];
+            $orderdetail->save();
+        }
+        foreach ($cart as $values) {            
+            $product = Product::find($values['id']);
+            $product->quantity = $product->quantity - $values['quantity'];
+            $product->save();
+        }    
+
+        return response()->json([
+            'status'=> 200,
+            'message'=> "Thành Công",
+        ]);
+    }      
 }
