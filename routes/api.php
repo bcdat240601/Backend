@@ -31,6 +31,8 @@ Route::post('age', [ProductController::class, 'age']);
 
 Route::post('cart/checkout', [ProductController::class, 'checkout']);
 
+Route::post('hint', [ProductController::class, 'hint']);
+
 Route::post('shop/category', [ProductController::class, 'showproductbycate']);
 
 Route::post('shop/addtocart', [ProductController::class, 'addtocart']);

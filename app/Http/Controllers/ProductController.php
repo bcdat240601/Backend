@@ -153,4 +153,18 @@ class ProductController extends Controller
             'message'=> "Thành Công",
         ]);
     }      
+    public function hint(Request $req){
+        $search = $req->search;
+        if ($search != "") {
+            $query = DB::table('product')->where('name','LIKE',"%$search%")->get();
+            return response()->json([
+                'status'=> 200,
+                'hint'=> $query,
+            ]);            
+        }
+        return response()->json([
+            'status'=> 200,
+            'hint'=> 0,
+        ]);
+    }
 }
