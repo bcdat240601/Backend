@@ -155,16 +155,22 @@ class ProductController extends Controller
     }      
     public function hint(Request $req){
         $search = $req->search;
+        $issearched = $req->issearched;
         if ($search != "") {
-            $query = DB::table('product')->where('name','LIKE',"%$search%")->get();
+            $query = DB::table('product')->where('name','LIKE',"%$search%");
+            if ($issearched != 1) {
+                $result = $query->get();                
+            }else{
+                $result = $query->paginate(1);                
+            }
             return response()->json([
                 'status'=> 200,
-                'hint'=> $query,
-            ]);            
+                'result'=> $result,
+            ]);    
         }
         return response()->json([
             'status'=> 200,
-            'hint'=> 0,
+            'result'=> 0,
         ]);
     }
 }
