@@ -43,3 +43,5 @@ Route::post('register', [CustomerController::class, 'register']);
 
 Route::post('login', [CustomerController::class, 'login']);
 
+Route::post('editprofile', [CustomerController::class, 'editprofile']);
+

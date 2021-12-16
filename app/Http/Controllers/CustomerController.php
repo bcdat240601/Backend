@@ -41,4 +41,29 @@ class CustomerController extends Controller
             'account'=>$checkemail,
         ]);
     }
+    public function editprofile(Request $req){
+        $fullname = $req->fullname;
+        $password = $req->password;
+        $phone = $req->phone;
+        $email = $req->email;         
+        $checkemail = DB::table("customer")->where([['email',$email],['customer_id','!=',$req->id]])->first();
+        if ($checkemail != null) {
+            return response()->json([
+                'status'=> 200,
+                'message'=>'Trùng email'
+            ]);
+        }        
+        $in4 = DB::table("customer")->where('customer_id',$req->id)->first();
+        $customer = Customer::Find($in4->customer_id);
+        $customer->name = $fullname;
+        $customer->password = Hash::make($password);
+        $customer->phone = $phone;
+        $customer->email = $email;
+        $customer->save();
+        return response()->json([
+            'status'=> 200,
+            'message'=>'Thành công',
+            'name'=>$fullname
+        ]);
+    }
 }
