@@ -66,4 +66,20 @@ class CustomerController extends Controller
             'name'=>$fullname
         ]);
     }
+    public function orderhistory(Request $req){
+        $id = $req->id;
+        $getorder = DB::table('orderquanao')->where('customer_id',$id)->get();
+        return response()->json([
+            'status'=> 200,            
+            'orderbill'=>$getorder
+        ]);
+    }
+    public function orderdetailhistory(Request $req){
+        $orderid = $req->orderid;
+        $getorderdetail = DB::table('orderdetail')->select('orderdetail.order_id','product.name','orderdetail.quantity','orderdetail.price','orderdetail.subtotal','orderdetail.created_at')->join('product','orderdetail.product_id','=','product.product_id')->where('orderdetail.order_id',$orderid)->get();
+        return response()->json([
+            'status'=> 200,            
+            'orderbilldetails'=>$getorderdetail
+        ]);
+    }
 }

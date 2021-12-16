@@ -45,3 +45,7 @@ Route::post('login', [CustomerController::class, 'login']);
 
 Route::post('editprofile', [CustomerController::class, 'editprofile']);
 
+Route::post('orderhistory', [CustomerController::class, 'orderhistory']);
+
+Route::post('orderdetailhistory', [CustomerController::class, 'orderdetailhistory']);
+
